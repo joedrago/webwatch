@@ -1,4 +1,4 @@
-ansiConvert = require 'ansi-to-html'
+AU = require('ansi_up').default
 atomicWrite = require 'atomic-write'
 getStdin = require 'get-stdin'
 
@@ -26,9 +26,9 @@ main = ->
   if args.n
     interval = parseInt(args.n)
 
-  ansi = new ansiConvert()
+  au = new AU()
   rawOutput = await getStdin()
-  htmlOutput = ansi.toHtml(rawOutput)
+  htmlOutput = au.ansi_to_html(rawOutput)
 
   generatedTimestamp = new Date().toISOString()
 

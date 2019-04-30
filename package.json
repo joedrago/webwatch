@@ -11,7 +11,7 @@
     "test": "cake build && test.bat | node webwatch.js test.html"
   },
   "devDependencies": {
-    "ansi-to-html": "^0.6.10",
+    "ansi_up": "^4.0.3",
     "atomic-write": "^0.1.1",
     "browserify": "^16.2.3",
     "coffeeify": "^3.0.1",
