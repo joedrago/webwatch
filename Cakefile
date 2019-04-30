@@ -5,9 +5,8 @@ browserify = require 'browserify'
 coffeeify = require 'coffeeify'
 uglifyify = require 'uglifyify'
 
-makeBundle = (forNode, mainCoffee, bundleFilename, callback) ->
+makeBundle = (forNode, productionBuild, mainCoffee, bundleFilename, callback) ->
   # equal of command line $ "browserify --debug -t coffeeify ./src/main.coffee > bundle.js "
-  productionBuild = (process.env.NODE_ENV == 'production')
   opts = {
     extensions: ['.coffee']
   }
@@ -16,7 +15,10 @@ makeBundle = (forNode, mainCoffee, bundleFilename, callback) ->
     opts.detectGlobals = false
     opts.insertGlobals = false
     # opts.commondir = false
-  if not productionBuild
+  if productionBuild
+    buildName = "Production"
+  else
+    buildName = "Debug"
     opts.debug = true
   b = browserify opts
   b.add mainCoffee
@@ -30,12 +32,15 @@ makeBundle = (forNode, mainCoffee, bundleFilename, callback) ->
         prepend = "#!/usr/bin/env node\n"
       fs.writeFile bundleFilename, prepend+result, (err) ->
         if not err
-          util.log "Compilation finished: #{bundleFilename}"
+          util.log "Compilation finished (#{buildName}): #{bundleFilename}"
           callback?()
         else
           util.log "Bundle write failed: " + err
     else
       util.log "Compilation failed: " + err
 
-task 'build', 'build', (options) ->
-  makeBundle true, './src/main.coffee', "webwatch.js", ->
+task 'build', 'build (debug)', (options) ->
+  makeBundle true, false, './src/main.coffee', "webwatch.js", ->
+
+task 'prod', 'build (production)', (options) ->
+  makeBundle true, true, './src/main.coffee', "webwatch.js", ->

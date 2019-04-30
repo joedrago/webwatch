@@ -8,6 +8,9 @@
   },
   "scripts": {
     "build": "cake build",
+    "debug": "cake build",
+    "prod": "cake prod",
+    "production": "cake prod",
     "test": "cake build && test.bat | node webwatch.js test.html"
   },
   "devDependencies": {
